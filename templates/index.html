@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Batch Cocktail Scaler</title>
+</head>
+<body>
+  <h1>Batch Cocktail Scaler</h1>
+  {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+  {% endif %}
+  <form method="POST">
+    <label for="cocktail_name">Cocktail:</label>
+    <select id="cocktail_name" name="cocktail_name">
+      {% for name in cocktail_names %}
+        <option value="{{ name }}">{{ name }}</option>
+      {% endfor %}
+    </select>
+    <label for="desired_volume">Desired Volume (ml):</label>
+    <input type="number" id="desired_volume" name="desired_volume">
+    <input type="submit" value="Scale">
+  </form>
+  {% if scaled_ingredients %}
+    <h2>Scaled Recipe for {{ cocktail_name }} ({{ desired_volume }} ml)</h2>
+    <ul>
+      {% for ingredient, amount in scaled_ingredients.items %}
+        <li>{{ ingredient }}: {{ amount }} ml</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</body>
+</html>
