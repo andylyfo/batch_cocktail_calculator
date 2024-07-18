@@ -1,17 +1,51 @@
 const cocktails = {
-    "Negroni": { gin: 0.3, campari: 0.3, vermouth: 0.3, water: 0.1 },
-    "Gin Martini": { gin: 0.7, vermouth: 0.15, water: 0.15 },
-    "Daiquiri": { rum: 1.5, lime: 1, sugar: 0.5, water: 0.5 },
+    "Negroni": { gin: 0.3, campari: 0.3, vermouth_s: 0.3, water: 0.1 },
+    "Gin Martini": { gin: 0.7, vermouth_d: 0.15, water: 0.15 },
+    "Daiquiri": { rum_w: 1.5, lime: 1, sugar: 0.5, water: 0.5 },
     // Add more cocktails and their ratios here
   };
 
+const ingredients = {
+    "gin": "Gin",
+    "campari": "Campari",
+    "vermouth_s": "Sweet Vermouth",
+    "vermouth_d": "Dry Vermouth",
+    "water": "Filtered Water",
+    "rum": "Rum",
+    "rum_w": "White Rum",
+    "sugar": "Simple Syrup",
+    "vodka": "Vodka"
+}
+
 const cocktailQuotes = {
-    "Negroni": "The Negroni. One part gin, one part Campari, one part sweet vermouth. Build it over ice, stir it gently, and garnish with orange peel. It is a perfect balance of sweet and bitter, and a great way to start an evening.",
-    "Gin Martini": "I like to have a martini, two at the very most — After three I'm under the table, After four, I'm under my host",
-    "Daiquiri": "My favorite drink in the world... The sweetest and simplest drink I know of.",  // Ernest Hemingway, A Farewell to Arms
-    // Add more quotes for other cocktails
-  };
-  
+    "Negroni": {
+        quote: "Around number three it's like... 'Where'd my pants go? And who the hell are you?'",
+        author: "Anthony Bourdain" // Or another relevant source
+    },
+    "Gin Martini": {
+        quote: "I like to have a martini, two at the very most—after three I'm under the table, after four, I'm under my host",
+        author: "Dorothy Parker"
+    },
+    "Daiquiri": {
+        quote: "My favorite drink in the world... The sweetest and simplest drink I know of.",
+        author: "Ernest Hemingway, A Farewell to Arms"
+    }}
+
+const cocktailServing = {
+    "Negroni": {
+        serve: "In a squat tumbler. Over large cubes of Ice.",
+        garnish: "A thick slice of orange."
+    },
+    "Gin Martini": {
+        serve: "In a Martini Glass.",
+        garnish: "An Olive."
+    },
+    "Daiquiri": {
+        serve: "In a Coupe Glass",
+        garnish: "A lime wedge."
+    }}
+
+
 function calculateRatios() {
     const recipe = document.getElementById("cocktail").value;
     const volume = parseFloat(document.getElementById("volume").value);
@@ -26,6 +60,10 @@ function calculateRatios() {
   
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = ""; // Clear previous results
+    const quoteDiv = document.getElementById("quote");
+    quoteDiv.innerHTML = ""; // Clear previous quote
+    const servingDiv = document.getElementById("serving");
+    servingDiv.innerHTML = ""; // Clear previous quote
   
     for (const ingredient in ratios) {
       const ingredientRatio = ratios[ingredient];
@@ -34,16 +72,52 @@ function calculateRatios() {
       result.textContent = `${ingredient}: ${ingredientVolume.toFixed(2)}ml`;
       resultsDiv.appendChild(result);
     }
-    const quoteDiv = document.getElementById("quote"); // Add a new element for the quote
+
   
-    // Clear any previous quote
-    quoteDiv.innerHTML = "";
-  
-    // Retrieve the quote based on the recipe (if it exists)
+
+
+
     const quote = cocktailQuotes[recipe];
     if (quote) {
       const quoteParagraph = document.createElement("p");
-      quoteParagraph.textContent = quote;
-      quoteDiv.appendChild(quoteParagraph);
+  
+      // Create a span element for the quote itself (bold and in quotations)
+      const quoteObject = cocktailQuotes[recipe];
+      if (quoteObject) {
+        const quoteParagraph = document.createElement("p");
+    
+        const quoteSpan = document.createElement("span");
+        quoteSpan.classList.add("quote-text");
+        quoteSpan.textContent = `"${quoteObject.quote}"`;
+    
+        const authorSpan = document.createElement("span");
+        authorSpan.classList.add("quote-author");
+        authorSpan.textContent = ` - ${quoteObject.author}`;
+    
+        quoteParagraph.appendChild(quoteSpan);
+        quoteParagraph.appendChild(authorSpan);
+        quoteDiv.appendChild(quoteParagraph);}
+    }
+
+    const serving = cocktailServing[recipe];
+    if (serving) {
+      const servingParagraph = document.createElement("p");
+  
+      // Create a span element for the quote itself (bold and in quotations)
+      const servingObject = cocktailServing[recipe];
+      if (servingObject) {
+        const servingParagraph = document.createElement("p");
+    
+        const serveSpan = document.createElement("span");
+        serveSpan.classList.add("serving-serve");
+        serveSpan.textContent = `Serve: ${servingObject.serve} `;
+    
+        const garnishSpan = document.createElement("span");
+        garnishSpan.classList.add("serving-garnish");
+        garnishSpan.textContent = ` Garnish: ${servingObject.garnish}`;
+    
+        servingParagraph.appendChild(serveSpan);
+        servingParagraph.appendChild(garnishSpan);
+        servingDiv.appendChild(servingParagraph);}
     }
 }
