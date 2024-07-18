@@ -14,7 +14,8 @@ const ingredients = {
     "rum": "Rum",
     "rum_w": "White Rum",
     "sugar": "Simple Syrup",
-    "vodka": "Vodka"
+    "vodka": "Vodka",
+    "lime": "Fresh Lime Juice"
 }
 
 const cocktailQuotes = {
@@ -41,7 +42,7 @@ const cocktailServing = {
         garnish: "An Olive."
     },
     "Daiquiri": {
-        serve: "In a Coupe Glass",
+        serve: "Shake in vessel. In a Coupe Glass.",
         garnish: "A lime wedge."
     }}
 
@@ -59,7 +60,7 @@ function calculateRatios() {
     const totalRatio = Object.values(ratios).reduce((a, b) => a + b, 0);
   
     const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = ""; // Clear previous results
+    resultsDiv.innerHTML = "";
     const quoteDiv = document.getElementById("quote");
     quoteDiv.innerHTML = ""; // Clear previous quote
     const servingDiv = document.getElementById("serving");
@@ -68,9 +69,20 @@ function calculateRatios() {
     for (const ingredient in ratios) {
       const ingredientRatio = ratios[ingredient];
       const ingredientVolume = (volume * ingredientRatio) / totalRatio;
-      const result = document.createElement("p");
-      result.textContent = `${ingredient}: ${ingredientVolume.toFixed(2)}ml`;
-      resultsDiv.appendChild(result);
+
+      const ingredientSpan = document.createElement("span");
+      ingredientSpan.classList.add("ingredient-name");
+      ingredientSpan.textContent = ingredients[ingredient] + ": ";
+
+      const volumeSpan = document.createElement("span");
+      volumeSpan.classList.add("ingredient-volume");
+      volumeSpan.textContent = `${ingredientVolume.toFixed(2)}ml`;
+
+      const resultParagraph = document.createElement("p");
+      resultParagraph.appendChild(ingredientSpan);
+      resultParagraph.appendChild(volumeSpan);
+      resultsDiv.appendChild(resultParagraph);
+
     }
 
   
@@ -81,7 +93,6 @@ function calculateRatios() {
     if (quote) {
       const quoteParagraph = document.createElement("p");
   
-      // Create a span element for the quote itself (bold and in quotations)
       const quoteObject = cocktailQuotes[recipe];
       if (quoteObject) {
         const quoteParagraph = document.createElement("p");
